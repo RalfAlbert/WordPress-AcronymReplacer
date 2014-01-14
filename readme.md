@@ -4,4 +4,4 @@ Simple plugin to test the `Compact_KeyValue_List` class. This plugin is working,
 
 For detailed information*, see the readme_compact_keyvalue_list.md in the classes folder.
 
-* Sorry, the text is only available in german for now. If anybody want to translate it, just do it and send a fork request.
+\* Sorry, the text is only available in german for now. If anybody want to translate it, just do it and send a fork request.
