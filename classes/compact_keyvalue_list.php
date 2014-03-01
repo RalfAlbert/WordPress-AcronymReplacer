@@ -10,7 +10,7 @@
  * @subpackage RalfAlbert\Tooling\Lists
  * @author Ralf Albert <me@neun12.de>
  * @license GPLv3 http://www.gnu.org/licenses/gpl-3.0.txt
- * @version 1.0
+ * @version 1.2
  * @link http://wordpress.com
  */
 
@@ -64,7 +64,7 @@ class Compact_KeyValue_List
 	 * Slug to enqueue the JS and stylesheet
 	 * @var string
 	 */
-	public $scripts_slug = 'CompactKeyValueList';
+	public static $scripts_slug = 'CompactKeyValueList';
 
 	/**
 	 * Array for buttons "Add item" and "Delete item"
@@ -125,7 +125,7 @@ class Compact_KeyValue_List
 			$this->option_name = $config->option_name;
 
 		if ( ! empty( $config->slug ) )
-			$this->scripts_slug = $config->slug;
+			self::$scripts_slug = $config->slug;
 
 	}
 
@@ -186,7 +186,7 @@ class Compact_KeyValue_List
 		return array(
 		 	'option_name' => '',
 			'buttons'     => $this->buttons,
-			'slug'        => $this->scripts_slug,
+			'slug'        => self::$scripts_slug,
 		);
 
 	}
@@ -194,6 +194,7 @@ class Compact_KeyValue_List
 	/**
 	 * Return the HTML for the list
 	 * @param		array|object $elements The elements to display
+	 * @param   string       $id       An optional ID for the list wrapper
 	 * @return	string
 	 */
 	public function get_list( $elements = null, $id = '' ) {
@@ -269,12 +270,11 @@ TEMPL;
 	/**
 	 * Add the hook on pageload to automatically enqueue the JS and CSS
 	 * @param	string	$slug			The script slug used in wp_enqueue_script() and wp_enqueue_style()
-	 * @param	string	$class		The CSS class to use
 	 * @param	string	$pageslug	Optional: The pageslug where the list will be displayed
 	 */
 	public static function enqueue_scripts( $slug, $pageslug = 'options-writing.php' ) {
 
-		$this->scripts_slug = $slug;
+		self::$scripts_slug = $slug;
 		add_action( "load-{$pageslug}", array( __CLASS__, '_enqueue_scripts' ), 10, 0 );
 
 	}
@@ -285,7 +285,7 @@ TEMPL;
 	public static function _enqueue_scripts() {
 
 		wp_enqueue_script(
-			$this->scripts_slug,
+			self::$scripts_slug,
 			plugin_dir_url( __FILE__ ) . basename( __FILE__ ),
 			array( 'jquery' ),
 			"JS",
@@ -293,7 +293,7 @@ TEMPL;
 		);
 
 		wp_enqueue_style(
-			$this->scripts_slug,
+			self::$scripts_slug,
 			plugin_dir_url( __FILE__ ) . basename( __FILE__ ),
 			false,
 			"CSS",
@@ -304,7 +304,6 @@ TEMPL;
 
 	/**
 	 * Returns the needed JS for the list with the given css-class
-	 * @param		string 					$class	CSS class to use
 	 * @return	boolean|string	void		False if no class was set, else the JS
 	 */
 	public static function get_js() {
@@ -383,7 +382,6 @@ JS;
 
 	/**
 	 * Return the needed CSS for the list with the given css-class
-	 * @param		string 					$class	CSS class to use
 	 * @return	boolean|string	void		False if no class was set, else the CSS
 	 */
 	public static function get_stylesheet() {

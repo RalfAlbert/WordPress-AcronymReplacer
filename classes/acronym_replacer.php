@@ -46,7 +46,7 @@ function plugin_init() {
 	 *
 	 *  This static call is needed to enqueue the JS and CSS
 	 */
-	Compact_KeyValue_List::enqueue_scripts( 'acronym-replacer', 'acronymreplacer', 'options-writing.php' );
+	Compact_KeyValue_List::enqueue_scripts( 'acronym-replacer', 'options-writing.php' );
 
 	add_action( 'content_save_pre', array( 'RalfAlbert\AcronymReplacer\Backend\Replacer', 'replace' ), 10, 1 );
 
