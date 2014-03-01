@@ -166,13 +166,11 @@ Beispiel:
 		 * This class can automatically create the JS and stylesheet for the list on the fly
 		 * It expect three params:
 		 *  - the slug to enqueue JS and CSS
-		 *  - the css-class to be used inside the list (and the JS depends on)
 		 *  - the pageslug where the list should be displayed
 		 *
 		 *  This static call is needed to enqueue the JS and CSS
 		 */
 		$slug      = 'compact-list';
-		$css_class = 'compactlist';
 		$pageslug  = 'options-writing.php';
 
 		Compact_KeyValue_List::enqueue_scripts( $slug, $css_class, $pageslug );
@@ -185,8 +183,6 @@ In diesem Beispiel wird während der Ausführung des Hooks `plugins_init` sowohl
 
 In diesem Beispiel wird unter den Menüpunkt "Einstellungen -> Schreiben" durch die Klasse `MenuItem` ein weiteres Feld eingefügt in dem die Liste dargestellt wird. Die Klasse `Compact_KeyValue_List` fügt den Hook `load-{$pageslug}` hinzu, so dass beim Aufruf des Menüpunktes "Schreiben" das JavaScript und das Stylesheet unter der Verwendung des Slugs `compact-list` eingefügt werden.
 
-Die Angabe der CSS-Klasse (`$css_Class`) ist zwingend nötig und ermöglicht es mehrere Listen auf der gleichen Seite zu verwenden. Allerdings würde dann bei Verwendung dieser Methode für jede Liste ein eigenes JavaScript und ein eigenes Stylesheet erzeugt werden, weshalb von der Verwendung dieser Methode im produktiven Einsatz abzuraten ist.
-
 ##### Erzeugung von statischen Scripten während der Pluginaktivuierung #####
 Sinnvoller ist das Erzeugen von statischen Dateien während er Pluginaktivierung. Hierzu stellt die Klasse statische Methoden bereit zur Erstellung des JavaScripts und des Stylesheets welche dann als Datei gespeichert werden können.
 
@@ -196,10 +192,8 @@ Sinnvoller ist das Erzeugen von statischen Dateien während er Pluginaktivierung
 		
 		require_once 'compact_keyyvalue_list.php';
 
-		$css_class = 'compactlist';
-
-		$js  = Compact_KeyValue_List::get_js( $css_class );
-		$css = Compact_KeyValue_List::get_stylesheet( $css_class );
+		$js  = Compact_KeyValue_List::get_js();
+		$css = Compact_KeyValue_List::get_stylesheet();
 
 		/*
 		 * code to save content of $js and $css
@@ -208,11 +202,6 @@ Sinnvoller ist das Erzeugen von statischen Dateien während er Pluginaktivierung
 	}
 
 Da es nicht immer sichergestellt ist das Dateien in den jeweils gewünschten Verzeichnissen angelegt werden können, kann die zuerst genannte Methode als Fallback genutzt werden sofern das erstellen der Dateien fehl schlägt.
-
-##### Kombination mehrerer Listen in statischen Dateien #####
-Derzeit ist noch keine Methode implementiert die es ermöglicht mehrere CSS-Klassen anzugeben so das ein JavaScript bzw. Stylesheet erzeugt wird das gleichzeitig für mehrere Listen benutzt werden kann. Werden mehrere Listen verwendet und sollen statische JavaScript- und Stylesheet-Dateien verwendet/erzeugt werden, so müssen diese Dateien manuell bzw. scriptgesteuert erzeugt werden.
-
-Die manuelle erzeugung bzw. Nachbearbeitung ist auch in Hinsicht auf Anpassung des Stylesheets zu bevorzugen.
 
 #### Anmerkung ####
 Die Klasse berücksichtigt die WordPress-Konstante `SCRIPT_DEBUG` und gibt dementsprechend komprimiertes bzw. unkomprimiertes JavaScript / Stylesheet aus.   
